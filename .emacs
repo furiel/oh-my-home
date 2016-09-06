@@ -15,7 +15,6 @@
 (color-theme-initialize)
 (color-theme-hober)
 
-
 (require 'helm-config)
 (helm-mode 1)
 (global-set-key (kbd "M-x") 'helm-M-x)
@@ -23,3 +22,5 @@
 
 (require 'wc-mode)
 (wc-mode)
+
+(setq inhibit-startup-screen t)
