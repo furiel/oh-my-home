@@ -1,3 +1,4 @@
+(require 'cl)
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
@@ -5,6 +6,10 @@
 (package-initialize)
 (package-refresh-contents)
 
-(package-install 'helm)
-(package-install 'wc-mode)
-(package-install 'color-theme)
+(flet ((package-install-if-not-exists (pkg)
+	 (unless (require pkg nil 'noerror)
+	   (package-install pkg))))
+  (package-install-if-not-exists 'helm)
+  (package-install-if-not-exists 'wc-mode)
+  (package-install-if-not-exists 'color-theme)
+  )
