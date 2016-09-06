@@ -2,6 +2,7 @@
 This repository contains basic configuration and setup script for emacs and zsh. Thus providing a convenient way to "move in" to a new environment.
 The zsh configuration is based on the popular oh-my-zsh.
 Some emacs packages are installed from melpa/elpa.
+The popular z command is also installed.
 
 Public usage is *NOT* recommended. You will lose your existing emacs/zsh configuration or break your system. I warned you...
 

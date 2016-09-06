@@ -3,7 +3,10 @@ install: emacs zsh
 ~/.oh-my-zsh:
 	git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
-zsh: ~/.oh-my-zsh
+~/z:
+	git clone https://github.com/rupa/z ~/z
+
+zsh: ~/.oh-my-zsh ~/z
 	-mv ~/.zshrc ~/.zshrc.old
 	ln -s `pwd`/.zshrc ~/.zshrc
 
