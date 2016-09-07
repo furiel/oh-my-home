@@ -12,4 +12,5 @@
   (package-install-if-not-exists 'helm)
   (package-install-if-not-exists 'wc-mode)
   (package-install-if-not-exists 'color-theme)
+  (package-install-if-not-exists 'magit)
   )
