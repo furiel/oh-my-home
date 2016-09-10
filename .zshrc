@@ -18,7 +18,9 @@ bindkey "^X^E" edit-command-line
 
 setopt extended_glob
 
-VISUAL="emacsclient -nw"
+export VISUAL="emacsclient -nw"
+export GOPATH=~/gopath
+
 alias emnw='emacsclient -nw'
 alias ssh-insecure='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 alias emacs-eval='emacs -Q --batch --eval'
