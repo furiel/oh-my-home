@@ -13,4 +13,5 @@
   (package-install-if-not-exists 'wc-mode)
   (package-install-if-not-exists 'color-theme)
   (package-install-if-not-exists 'magit)
+  (package-install-if-not-exists 'find-file-in-project)
   )
