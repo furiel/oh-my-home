@@ -8,7 +8,10 @@ source $ZSH/oh-my-zsh.sh
 
 autoload -U promptinit
 promptinit
-prompt adam2
+prompt clint
+export PROMPT="""%F{red}[%F{cyan}%D{%a %y/%m/%d %R %Z}%F{red}]%F{red}[%F{green}%l%F{red}]%F{red}[%F{cyan}x86_64/linux-gnu/4.4.0-45-generic%F{red}]%F{red}[%F{cyan}5.1.1%F{red}]
+%F{red}<%F{green}%n@%m%F{white}:%F{yellow}%~%F{red}>%f """
+
 
 . $HOME/z/z.sh
 
