@@ -15,4 +15,5 @@
   (package-install-if-not-exists 'magit)
   (package-install-if-not-exists 'find-file-in-project)
   (package-install-if-not-exists 'yaml-mode)
+  (package-install-if-not-exists 'cmake-mode)
   )
