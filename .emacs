@@ -41,3 +41,19 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+(define-minor-mode linux-kernel-mode
+  "Toggle linux-kernel mode."
+ ;; The initial value.
+ nil
+ ;; The indicator for the mode line.
+ " linux-kernel"
+ ;; The minor mode bindings.
+ nil
+ :group 'linux-kernel
+ (progn
+   (setq indent-tabs-mode t)
+   (c-set-style "linux")
+   )
+ )

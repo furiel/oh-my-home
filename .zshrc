@@ -23,6 +23,8 @@ setopt extended_glob
 
 export VISUAL="emacsclient-snapshot -nw"
 export GOPATH=~/gopath
+export GOROOT=/usr/lib64/go
+export PATH=$PATH:~/gopath/bin
 
 alias emacs='emacs-snapshot'
 alias emacsclient='emacsclient-snapshot'
