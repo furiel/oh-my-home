@@ -1,7 +1,7 @@
 (require 'cl)
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+	     '("melpa" . "http://melpa.org/packages/") t)
 
 (package-initialize)
 (package-refresh-contents)
@@ -16,4 +16,6 @@
   (package-install-if-not-exists 'find-file-in-project)
   (package-install-if-not-exists 'yaml-mode)
   (package-install-if-not-exists 'cmake-mode)
+  (package-install-if-not-exists 'auto-complete)
+  (package-install-if-not-exists 'yasnippet)
   )
