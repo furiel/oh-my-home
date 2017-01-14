@@ -26,6 +26,8 @@
 (require 'find-file-in-project)
 (global-set-key (kbd "C-x f") 'find-file-in-project)
 
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
 (setq inhibit-startup-screen t)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
