@@ -1,2 +1,4 @@
 .emacs.d/elpa
+.emacs.d/session*
 auto-save-list
+profile.inc

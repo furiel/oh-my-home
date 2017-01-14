@@ -21,17 +21,7 @@ bindkey "^X^E" edit-command-line
 
 setopt extended_glob
 
-export VISUAL="emacsclient-snapshot -nw"
-export GOPATH=~/gopath
-export GOROOT=/usr/lib64/go
-export PATH=$PATH:~/gopath/bin
-
-alias emacs='emacs-snapshot'
-alias emacsclient='emacsclient-snapshot'
-alias emnw='emacsclient-snapshot -nw'
-alias ssh-insecure='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-alias emacs-eval='emacs-snapshot -Q --batch --eval'
-alias magit="emacs-snapshot --eval \"(progn (require 'package) (package-initialize) (magit-status default-directory))\""
+. $HOME/.oh-my-home/profile.inc
 
 function find-contain {
         pw="$1"
