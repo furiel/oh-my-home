@@ -18,4 +18,5 @@
   (package-install-if-not-exists 'cmake-mode)
   (package-install-if-not-exists 'auto-complete)
   (package-install-if-not-exists 'yasnippet)
+  (package-install-if-not-exists 'iedit)
   )

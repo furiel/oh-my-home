@@ -45,6 +45,9 @@
 (add-hook 'c++-mode-hook 'custom:ac-c-header-init)
 (add-hook 'c-mode-hook 'custom:ac-c-header-init)
 
+; iedit
+(define-key global-map (kbd "C-c ;") 'iedit-mode)
+
 ; Turn on semantic mode
 (semantic-mode 1)
 (defun custom:add-semantic-to-auto-complete ()
@@ -62,7 +65,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yaml-mode wc-mode magit helm find-file-in-project color-theme))))
+    (iedit yaml-mode wc-mode magit helm find-file-in-project color-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
