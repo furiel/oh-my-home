@@ -55,7 +55,7 @@
 (add-hook 'c-mode-common-hook 'custom:add-semantic-to-auto-complete)
 (global-semantic-idle-scheduler-mode 1)
 
-(add-hook 'before-save-hook 'whitespace-cleanup)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (setq inhibit-startup-screen t)
 (custom-set-variables
