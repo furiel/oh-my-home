@@ -13,8 +13,5 @@ zsh: ~/.oh-my-zsh ~/z
 	ln -s `pwd`/.zshrc ~/.zshrc
 
 emacs:
-	-mv ~/.emacs ~/.emacs.old
-	-mv ~/.emacs.d ~/.emacs.d.old
-	ln -s `pwd`/.emacs ~/.emacs
-	ln -s `pwd`/.emacs.d ~/.emacs.d
+	-ln -s `pwd`/.emacs.d ~/.emacs.d
 	emacs -Q --batch --script install_packages.el
