@@ -43,3 +43,9 @@
 (setq godef-command "/home/furiel/gopath/bin/godef")
 
 (setq-default indent-tabs-mode nil)
+
+(define-key global-map (kbd "<f7>") '(lambda () (interactive) (recompile)))
+
+(add-to-list 'auto-mode-alist '("\\.zts\\'" . python-mode))
+
+(setq compilation-scroll-output 'first-error)
