@@ -5,9 +5,7 @@
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-hober)
+(load-theme 'tango-dark)
 
 (require 'helm-config)
 (helm-mode 1)
@@ -34,9 +32,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(helm-gtags-suggested-key-mapping t)
- '(package-selected-packages
-   (quote
-    (elpy jedi tidy bm evil markdown-mode cmake-mode cmake-ide helm-make fireplace function-args ac-c-headers helm-gtags iedit yaml-mode wc-mode magit helm find-file-in-project color-theme)))
  '(show-paren-mode t)
  '(tramp-syntax (quote default) nil (tramp)))
 
