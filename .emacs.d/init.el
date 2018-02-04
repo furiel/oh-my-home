@@ -1,9 +1,23 @@
-(setq package-enable-at-startup nil)
+(setq inhibit-startup-screen t)
 
 (require 'package)
-(package-initialize)
+(setq package-enable-at-startup nil)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+	(package-refresh-contents)
+	(package-install 'use-package))
+
+(use-package try
+	:ensure t)
+
+(use-package which-key
+	:ensure t
+	:config
+	(which-key-mode))
 
 (load-theme 'tango-dark)
 
@@ -25,7 +39,6 @@
 
 (setq dired-listing-switches "-lXGh --group-directories-first")
 
-(setq inhibit-startup-screen t)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
