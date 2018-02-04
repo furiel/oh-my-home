@@ -1,17 +1,34 @@
 export ZSH=$HOME/.oh-my-zsh
 
-ZSH_THEME="robbyrussell"
 HYPHEN_INSENSITIVE="true"
 plugins=(git zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
-autoload -U promptinit
-promptinit
-prompt clint
-export PROMPT="""%F{red}[%F{cyan}%D{%a %y/%m/%d %R %Z}%F{red}]%F{red}[%F{green}%l%F{red}]%F{red}[%F{cyan}x86_64/linux-gnu/4.4.0-45-generic%F{red}]%F{red}[%F{cyan}5.1.1%F{red}]
-%F{red}<%F{green}%n@%m%F{white}:%F{yellow}%~%F{red}>%f """
+function collapse_pwd {
+    echo $(pwd | sed -e "s,^$HOME,~,")
+}
 
+function prompt_char {
+    git branch >/dev/null 2>/dev/null && echo '$' && return
+    echo '○'
+}
+
+function virtualenv_info {
+    [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+}
+
+PROMPT='
+%{$fg[yellow]%}%n%{$reset_color%} at %{$fg[blue]%}%m%{$reset_color%} in %{$fg_bold[green]%}$(collapse_pwd)%{$reset_color%}$(git_prompt_info)
+$(virtualenv_info)$(prompt_char) '
+
+RPROMPT='%T'
+
+ZSH_THEME_GIT_PROMPT_PREFIX=" on %{$fg[magenta]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[green]%}!"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[green]%}?"
+ZSH_THEME_GIT_PROMPT_CLEAN=""
 
 . $HOME/z/z.sh
 
