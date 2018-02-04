@@ -10,6 +10,7 @@
 	 (unless (require pkg nil 'noerror)
 	   (package-install pkg))))
   (package-install-if-not-exists 'helm)
+  (package-install-if-not-exists 'helm-gtags)
   (package-install-if-not-exists 'wc-mode)
   (package-install-if-not-exists 'magit)
   (package-install-if-not-exists 'find-file-in-project)
