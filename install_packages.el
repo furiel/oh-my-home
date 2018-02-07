@@ -16,7 +16,6 @@
   (package-install-if-not-exists 'find-file-in-project)
   (package-install-if-not-exists 'yaml-mode)
   (package-install-if-not-exists 'cmake-mode)
-  (package-install-if-not-exists 'auto-complete)
   (package-install-if-not-exists 'yasnippet)
   (package-install-if-not-exists 'iedit)
   )

@@ -29,10 +29,6 @@
 (require 'wc-mode)
 (wc-mode)
 
-(require 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
-
 (setq make-backup-files nil)
 (setq auto-save-interval 1000)
 (electric-indent-mode -1)
@@ -63,3 +59,5 @@
   (add-to-list 'load-path (format "%s/conf.d" current-directory)))
 (load "version-control.el")
 (load "development.el")
+(load "completion.el")
+
