@@ -33,7 +33,7 @@
 (setq auto-save-interval 1000)
 (electric-indent-mode -1)
 
-(setq dired-listing-switches "-lXGh --group-directories-first")
+(setq dired-listing-switches "-lXGhA --group-directories-first")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
