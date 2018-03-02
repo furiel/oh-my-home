@@ -14,4 +14,3 @@ zsh: ~/.oh-my-zsh ~/z
 
 emacs:
 	-ln -s `pwd`/.emacs.d ~/.emacs.d
-	emacs -Q --batch --script install_packages.el

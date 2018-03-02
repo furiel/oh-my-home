@@ -1,0 +1,355 @@
+#+STARTUP: overview
+
+* customizations
+** Font
+
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil
+                      :family "DejaVu Sans Mono"
+                      :height 158
+                      :weight 'normal
+                      :width 'normal)
+#+END_SRC
+
+** Themes
+
+#+BEGIN_SRC emacs-lisp
+(load-theme 'tango-dark)
+#+END_SRC
+
+** Variables
+#+BEGIN_SRC emacs-lisp
+(setq make-backup-files nil)
+(setq auto-save-interval 1000)
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq make-backup-files nil)
+(setq dired-listing-switches "-lXGhA --group-directories-first")
+(setq compilation-scroll-output 'first-error)
+(setq-default indent-tabs-mode nil)
+#+END_SRC
+
+** default-modes
+#+BEGIN_SRC emacs-lisp
+(electric-indent-mode -1)
+(show-paren-mode 1)
+#+END_SRC
+** key bindings
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<f5>") 'revert-buffer)
+(global-set-key (kbd "<f7>") '(lambda () (interactive) (recompile)))
+(global-set-key (kbd "C-c g") #'helm-grep-do-git-grep)
+(global-set-key (kbd "C-c r") #'helm-gtags-find-rtag)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
+** Default hooks
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-to-list 'auto-mode-alist '("\\.zts\\'" . python-mode))
+#+END_SRC
+
+* org
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :ensure t
+    :config (setq org-src-fontify-natively t))
+
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+  (use-package ox-reveal
+    :ensure ox-reveal
+    :config
+      (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+      (setq org-reveal-mathjax t))
+
+  (use-package htmlize
+    :ensure t)
+
+#+END_SRC
+
+* General completion
+** which-key
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+	:ensure t
+	:config
+	(which-key-mode))
+#+END_SRC
+
+** auto-complete
+
+#+BEGIN_SRC emacs-lisp
+(use-package auto-complete
+  :ensure t
+  :init
+  (ac-config-default)
+  (global-auto-complete-mode t))
+#+END_SRC
+
+* avy - moving around
+
+#+BEGIN_SRC emacs-lisp
+(use-package try
+	:ensure t)
+
+(use-package avy
+  :ensure t
+  :bind (("C-'" . avy-goto-char-timer)
+         ("C-:" . avy-goto-line)
+         ("M-g w" . avy-goto-word-1)))
+#+END_SRC
+
+* projectile
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :ensure t
+  :config
+    (setq projectile-switch-project-action 'projectile-dired)
+    (setq projectile-completion-system 'helm)
+    (projectile-mode))
+#+END_SRC
+
+* helm
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm
+  :ensure t
+  :bind (("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files))
+  :config
+    (helm-mode 1))
+
+(add-hook 'c-mode-hook 'helm-gtags-mode)
+(add-hook 'c++-mode-hook 'helm-gtags-mode)
+(add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+(setq helm-gtags-prefix-key "\C-t")
+(setq helm-gtags-suggested-key-mapping t)
+
+(use-package helm-gtags
+  :ensure t)
+
+(advice-add
+ 'helm-grep-do-git-grep :around
+ (lambda (orig &rest args)
+   "Reverse sense of prefix arg."
+   (let ((arg (car args)))
+     (if arg
+	 (setq args (cons nil (cdr args)))
+       (setq args (cons '(4) (cdr args))))
+     (apply orig args))))
+#+END_SRC
+
+* wc-mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package wc-mode
+  :ensure t
+  :config (wc-mode))
+#+END_SRC
+
+* magit
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t
+  :config (setq magit-commit-arguments (list "--signoff")))
+#+END_SRC
+
+* yasnippet
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :config (yas-global-mode 1))
+
+(use-package yasnippet-snippets
+  :ensure t)
+
+#+END_SRC
+
+* iedit
+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package iedit
+  ;;   :ensure t
+  ;;   :bind (("C-c ;" . iedit-mode)))
+#+END_SRC
+
+* kernel-mode
+
+#+BEGIN_SRC emacs-lisp
+(define-minor-mode linux-kernel-mode
+  "Toggle linux-kernel mode." nil
+  "linux-kernel" nil
+ :group 'linux-kernel
+ (progn
+   (setq indent-tabs-mode t)
+   (c-set-style "linux")))
+#+END_SRC
+
+* c-mode
+
+#+BEGIN_SRC
+(setq c-default-style "linux" c-basic-offset 4)
+
+(defun balabit-c-mode-hooks ()
+  (let ((bname (buffer-file-name)))
+    (cond
+     ((string-match ".*syslog.*" bname) (c-set-style "gnu") ))))
+
+(add-hook 'c-mode-hook 'balabit-c-mode-hooks)
+(add-hook 'c-mode-hook 'helm-gtags-mode)
+#+END_SRC
+
+* semantic-mode - turned off!!!
+
+#+BEGIN_SRC emacs-lisp
+  ;; (semantic-mode 1)
+  ;; (defun custom:add-semantic-to-auto-complete ()
+  ;;   (add-to-list 'ac-sources 'ac-source-semantic))
+  ;; (add-hook 'c-mode-common-hook 'custom:add-semantic-to-auto-complete)
+  ;; (global-semantic-idle-scheduler-mode 1)
+#+END_SRC
+
+* find-file-in-project
+
+#+BEGIN_SRC emacs-lisp
+(use-package find-file-in-project
+  :ensure t
+  :bind (("C-x f" . find-file-in-project)))
+#+END_SRC
+
+* try
+#+BEGIN_SRC emacs-lisp
+(use-package try
+	:ensure t)
+#+END_SRC
+
+* yaml-mode
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode
+  :ensure t)
+#+END_SRC
+* cmake-mode
+#+BEGIN_SRC emacs-lisp
+(use-package cmake-mode
+  :ensure t)
+#+END_SRC
+
+* flycheck
+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package flycheck
+  ;;   :ensure t
+  ;;   :init
+  ;;   (global-flycheck-mode t))
+#+END_SRC
+
+* python
+
+#+BEGIN_SRC emacs-lisp
+(use-package jedi
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook 'jedi:ac-setup))
+#+END_SRC
+
+* markdown-mode
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+* undo-tree
+
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+:ensure t
+  :init
+    (global-undo-tree-mode))
+#+END_SRC
+
+* misc
+#+BEGIN_SRC emacs-lisp
+
+  (use-package expand-region
+    :ensure t
+    :config
+    (global-set-key (kbd "C-=") 'er/expand-region))
+
+  ;; (use-package hungry-delete
+  ;;   :ensure t
+  ;;   :config
+  ;;   (global-hungry-delete-mode))
+
+#+END_SRC
+
+* multiple cursors
+#+BEGIN_SRC emacs-lisp
+  (use-package multiple-cursors
+    :ensure t
+    :bind (("C-S-c C-S-c" . mc/edit-lines)
+           ("C->" . mc/mark-next-like-this)
+           ("C-<" . mc/mark-previous-like-this)
+           ("C-c C-<" . mc/mark-all-like-this)))
+#+END_SRC
+
+* bison-mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package bison-mode
+    :ensure t)
+(add-to-list 'auto-mode-alist '("\\.ym\\'" . bison-mode))
+#+END_SRC
+
+* phi-search
+
+#+BEGIN_SRC emacs-lisp
+  (use-package phi-search
+    :ensure t)
+  ;; :bind (("C-s". phi-search)
+  ;;        ("C-r" . phi-search-backward))
+
+  (add-hook 'multiple-cursors-mode-enabled-hook
+            (lambda ()
+              (interactive)
+              (global-set-key (kbd "C-s") 'phi-search)
+              (global-set-key (kbd "C-r") 'phi-search-backward)))
+
+  (add-hook 'multiple-cursors-mode-disabled-hook
+            (lambda ()
+              (interactive)
+              (global-set-key (kbd "C-s") 'isearch-forward)
+              (global-set-key (kbd "C-r") 'isearch-backward)))
+
+  (defun eval-and-replace ()
+    "Replace the preceding sexp with its value."
+    (interactive)
+    (backward-kill-sexp)
+    (condition-case nil
+        (prin1 (eval (read (current-kill 0)))
+               (current-buffer))
+      (error (message "Invalid expression")
+             (insert (current-kill 0)))))
+
+  (add-hook 'multiple-cursors-mode-enabled-hook
+            (lambda ()
+              (interactive)
+              (global-set-key (kbd "C-x C-e") 'eval-and-replace)))
+
+  (add-hook 'multiple-cursors-mode-disabled-hook
+            (lambda ()
+              (interactive)
+              (global-set-key (kbd "C-x C-e") 'eval-last-sexp)))
+#+END_SRC
