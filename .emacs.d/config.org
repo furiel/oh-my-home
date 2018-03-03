@@ -353,3 +353,8 @@
               (interactive)
               (global-set-key (kbd "C-x C-e") 'eval-last-sexp)))
 #+END_SRC
+* hy-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package hy-mode
+    :ensure t)
+#+END_SRC

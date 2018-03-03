@@ -24,8 +24,7 @@
  '(helm-gtags-prefix-key "")
  '(helm-gtags-suggested-key-mapping t)
  '(magit-commit-arguments nil)
- '(show-paren-mode t)
- '(tramp-syntax 'default nil (tramp)))
+ '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
