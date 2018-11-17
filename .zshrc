@@ -1,3 +1,5 @@
+export _Z_NO_RESOLVE_SYMLINKS=1
+
 export ZSH=$HOME/.oh-my-zsh
 
 HYPHEN_INSENSITIVE="true"
