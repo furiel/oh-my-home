@@ -165,6 +165,9 @@
 	 (setq args (cons nil (cdr args)))
        (setq args (cons '(4) (cdr args))))
      (apply orig args))))
+
+(use-package helm-ag
+  :ensure t)
 #+END_SRC
 
 * wc-mode
