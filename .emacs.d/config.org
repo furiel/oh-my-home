@@ -156,6 +156,12 @@
 (use-package helm-gtags
   :ensure t)
 
+(defun run-gtags ()
+  (interactive)
+  (let* ((path default-directory)
+         (default-directory (vc-call-backend (vc-responsible-backend path) 'root path)))
+    (shell-command "gtags --gtagslabel=ctag")))
+
 (advice-add
  'helm-grep-do-git-grep :around
  (lambda (orig &rest args)
