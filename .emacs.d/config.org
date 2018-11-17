@@ -290,6 +290,9 @@
   :init
   (add-hook 'python-mode-hook 'jedi:setup)
   (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+(use-package virtualenvwrapper
+  :ensure t)
 #+END_SRC
 
 * markdown-mode
