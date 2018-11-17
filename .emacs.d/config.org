@@ -38,7 +38,7 @@
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (global-set-key (kbd "<f7>") '(lambda () (interactive) (recompile)))
-(global-set-key (kbd "C-c g") #'helm-grep-do-git-grep)
+(global-set-key (kbd "M-s g") #'helm-grep-do-git-grep)
 (global-set-key (kbd "C-c r") #'helm-gtags-find-rtag)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+END_SRC
