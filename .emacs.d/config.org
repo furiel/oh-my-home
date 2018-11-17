@@ -98,7 +98,7 @@
   (global-auto-complete-mode t))
 #+END_SRC
 
-* avy - moving around
+* moving around
 
 #+BEGIN_SRC emacs-lisp
 (use-package try
@@ -109,6 +109,20 @@
   :bind (("C-'" . avy-goto-char-timer)
          ("C-:" . avy-goto-line)
          ("M-g w" . avy-goto-word-1)))
+
+(advice-add
+ 'scroll-up-command :around
+ (lambda (orig &rest args)
+   "Recentering"
+   (apply orig args)
+   (recenter)))
+
+(advice-add
+ 'scroll-down-command :around
+ (lambda (orig &rest args)
+   "Recentering"
+   (apply orig args)
+   (recenter)))
 #+END_SRC
 
 * projectile
