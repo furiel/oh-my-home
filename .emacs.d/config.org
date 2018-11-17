@@ -387,3 +387,15 @@
   (use-package hy-mode
     :ensure t)
 #+END_SRC
+* syslog
+#+BEGIN_SRC emacs-lisp
+(defun find-syslog-ng-config ()
+  (interactive)
+  (let* ((git-root (locate-dominating-file default-directory ".git"))
+         (config-directory (expand-file-name (concat git-root "../root/etc/")))
+         (config-filename (helm :sources
+                                (helm-build-sync-source "config files"
+                                  :candidates (directory-files config-directory nil "\.conf")))))
+    (find-file (concat config-directory config-filename))))
+#+END_SRC
+
