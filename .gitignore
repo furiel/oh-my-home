@@ -1,4 +1,10 @@
 .emacs.d/elpa
+.emacs.d/.python-environments/
+.emacs.d/ac-comphist.dat
+.emacs.d/config.el
+.emacs.d/eshell/
+.emacs.d/projectile-bookmarks.eld
+.emacs.d/semanticdb/
 .emacs.d/session*
 auto-save-list
 profile.inc
