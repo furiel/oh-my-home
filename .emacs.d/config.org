@@ -402,3 +402,72 @@
     (find-file (concat config-directory config-filename))))
 #+END_SRC
 
+* prompt
+#+BEGIN_SRC emacs-lisp
+  (defun furiel-prompt--pre-command-hook ()
+    (setq furiel-prompt--command-start-time (float-time)))
+  (add-hook 'eshell-pre-command-hook 'furiel-prompt--pre-command-hook)
+
+  (defun furiel-prompt--run-git (&rest args)
+    (with-temp-buffer
+      (apply #'process-file "git"
+             nil (list t nil) nil
+             args)
+      (let ((result (buffer-substring-no-properties
+                     (point-min) (line-end-position))))
+        (if (string-equal result "")
+            nil
+          result))))
+
+  (defun furiel-prompt--get-branch-name ()
+    (s-chomp
+     (or
+      (furiel-prompt--run-git "symbolic-ref" "HEAD" "--short")
+      (furiel-prompt--run-git "rev-parse" "HEAD" "--short"))))
+
+  (defun furiel-prompt--dirty ()
+    (when (furiel-prompt--run-git "status" "--porcelain")
+      "🔧"))
+
+  (defun furiel-prompt--git-part ()
+    (if-let ((git-branch-name (furiel-prompt--get-branch-name)))
+        (progn
+          (concat
+           (propertize "├─" 'face `(:foreground "green"))
+           (propertize (format " branch: %s" git-branch-name) 'face `(:foreground "pink"))
+           (if-let ((dirty-list (furiel-prompt--dirty)))
+               (propertize (format " %s" (furiel-prompt--dirty)) 'face `(:foreground "pink")))
+           "\n"))))
+
+  (defun furiel-prompt--function ()
+    (defvar-local furiel-prompt--command-start-time (float-time))
+
+    (let ((execution-time
+           (if furiel-prompt--command-start-time
+               (- (float-time) furiel-prompt--command-start-time)
+             0))
+          (git-branch-name (furiel-prompt--get-branch-name)))
+
+      (concat
+       (when (> execution-time 0.5)
+         (prog1
+             (propertize
+              (format "\nExecution time: %0.3f\n\n"
+                      (- (float-time) furiel-prompt--command-start-time)  'face `(:foreground "white")))
+           (setq furiel-prompt--command-start-time nil)))
+       (propertize "┌─[" 'face `(:foreground "green"))
+       (propertize (user-login-name) 'face `(:foreground "red"))
+       (propertize "@" 'face `(:foreground "green"))
+       (propertize (system-name) 'face `(:foreground "gray"))
+       (propertize "]──[" 'face `(:foreground "green"))
+       (propertize (format-time-string "%H:%M" (current-time)) 'face `(:foreground "yellow"))
+       (propertize "]──[" 'face `(:foreground "green"))
+       (propertize (concat (eshell/pwd)) 'face `(:foreground "white"))
+       (propertize "]\n" 'face `(:foreground "green"))
+       (furiel-prompt--git-part)
+       (propertize "└─>" 'face `(:foreground "green"))
+       (propertize (if (= (user-uid) 0) " # " " $ ") 'face `(:foreground "green"))
+       )))
+
+  (setq eshell-prompt-function #'furiel-prompt--function)
+#+END_SRC
