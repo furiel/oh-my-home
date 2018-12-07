@@ -153,7 +153,7 @@
 (setq helm-gtags-prefix-key "\C-t")
 (setq helm-gtags-suggested-key-mapping t)
 
-(use-package helm-gtags
+(use-package helm-gtags-furiel-fork
   :ensure t)
 
 (defun run-gtags ()
@@ -166,6 +166,7 @@
  'helm-grep-do-git-grep :around
  (lambda (orig &rest args)
    "Reverse sense of prefix arg."
+   (helm-gtags-push-stack)
    (let ((arg (car args)))
      (if arg
 	 (setq args (cons nil (cdr args)))
