@@ -401,6 +401,19 @@
                                 (helm-build-sync-source "config files"
                                   :candidates (directory-files config-directory nil "\.conf")))))
     (find-file (concat config-directory config-filename))))
+
+  (use-package syslogngconf-mode
+    :magic (("@version: " . syslogngconf-mode))
+    :mode (("/scl/.*\\.conf\\'" . syslogngconf-mode)))
+
+  (use-package flycheck-syslogngconf
+    :init (progn
+            (add-hook 'syslogngconf-mode-hook
+                      (lambda () (set-variable
+                                  'flycheck-syslogngconf-executable
+                                  (concat (syslogng-autodetect-root) "/sbin/syslog-ng" ))))
+            (add-hook 'syslogngconf-mode-hook
+                      (lambda () (flycheck-mode 1)))))
 #+END_SRC
 
 * prompt
