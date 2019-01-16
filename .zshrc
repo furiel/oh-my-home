@@ -75,7 +75,7 @@ function notifyosd-precmd() {
             cmdstat="successfully"
 			sndstat="/usr/share/sounds/gnome/default/alerts/glass.ogg"
         fi
-        if [ ! -z "$cmd" -a $cmd_time -gt 60 ]; then
+        if [ ! -z "$cmd" -a $cmd_time -gt ${LONG_COMMAND_NOTIFY_TIMEOUT:-60} ]; then
             if [ ! -z $SSH_TTY ] ; then
                 notify-send -i utilities-terminal -u low "$cmd_basename on `hostname` completed $cmdstat" "\"$cmd\" took $cmd_time seconds"; #play -q $sndstat
             else
