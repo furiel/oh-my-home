@@ -27,6 +27,7 @@
  '(helm-gtags-suggested-key-mapping t)
  '(magit-commit-arguments nil)
  '(show-paren-mode t))
+ '(package-archive-upload-base "/path/to/archive")
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

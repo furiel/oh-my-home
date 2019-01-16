@@ -472,3 +472,18 @@
 
   (setq eshell-prompt-function #'furiel-prompt--function)
 #+END_SRC
+* packaging
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (require 'package-x)
+
+  (advice-add
+   'package-upload-file :around
+   (lambda (orig &rest args)
+     "manual copy of multifile package"
+     (apply orig args)
+     (let ((file (first args)))
+       (when (string= (file-name-extension file) "tar")
+         (copy-file file package-archive-upload-base)))))
+#+END_SRC
+
