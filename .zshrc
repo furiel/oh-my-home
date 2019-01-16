@@ -56,7 +56,11 @@ cmdignore=(htop tmux top vim)
 
 # end and compare timer, notify-send if needed
 function notifyosd-precmd() {
-	retval=$?
+    if [ -z $ENABLE_LONG_COMMAND_NOTIFY ]; then
+        return
+    fi
+
+    retval=$?
     if [[ ${cmdignore[(r)$cmd_basename]} == $cmd_basename ]]; then
         return
     else

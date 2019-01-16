@@ -11,6 +11,7 @@ export VISUAL="${__emacsclient_bin} -nw"
 export GOPATH=~/gopath
 export GOROOT=/usr/lib64/go
 export PATH=$PATH:~/gopath/bin
+# export ENABLE_LONG_COMMAND_NOTIFY=true
 
 unset __emacs_bin
 unset __emacsclient_bin
