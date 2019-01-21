@@ -391,10 +391,12 @@
     (find-file (concat config-directory config-filename))))
 
   (use-package syslogngconf-mode
+    :ensure t
     :magic (("@version: " . syslogngconf-mode))
     :mode (("/scl/.*\\.conf\\'" . syslogngconf-mode)))
 
   (use-package flycheck-syslogngconf
+    :ensure t
     :init (progn
             (add-hook 'syslogngconf-mode-hook
                       (lambda () (set-variable
