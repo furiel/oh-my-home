@@ -40,6 +40,7 @@
 (global-set-key (kbd "<f7>") '(lambda () (interactive) (recompile)))
 (global-set-key (kbd "M-s g") #'helm-grep-do-git-grep)
 (global-set-key (kbd "C-c r") #'helm-gtags-find-rtag)
+(global-set-key (kbd "<f6>") '(lambda () (interactive) (find-file "/home/furiel/.oh-my-home/.emacs.d/config.org")))
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+END_SRC
 
@@ -377,6 +378,34 @@
 * hy-mode
 #+BEGIN_SRC emacs-lisp
   (use-package hy-mode
+    :bind (:map hy-mode-map
+                ("C-x C-e" . 'hy-shell-eval-last-sexp))
+    :ensure t)
+#+END_SRC
+
+* paredit
+#+BEGIN_SRC emacs-lisp
+(use-package paredit
+  :ensure t)
+
+(eval-after-load "paredit"
+   '(progn
+      (define-key paredit-mode-map (kbd "<C-left>") 'left-word)
+      (define-key paredit-mode-map (kbd "<C-right>") 'right-word)))
+#+END_SRC emacs-lisp
+
+* cider
+#+BEGIN_SRC emacs-lisp
+(use-package cider
+  :ensure t
+  :init
+  (add-hook 'clojure-mode-hook 'eldoc-mode)
+  (add-hook 'clojure-mode-hook 'paredit-mode))
+#+END_SRC emacs-lisp
+* dockerfile-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dockerfile-mode
     :ensure t)
 #+END_SRC
 * syslog
