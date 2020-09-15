@@ -3,7 +3,7 @@ export _Z_NO_RESOLVE_SYMLINKS=1
 export ZSH=$HOME/.oh-my-zsh
 
 HYPHEN_INSENSITIVE="true"
-plugins=(git zsh-autosuggestions)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -99,4 +99,6 @@ function notifyosd-preexec() {
 # make sure this plays nicely with any existing preexec
 preexec_functions+=( notifyosd-preexec )
 
-export EDITOR="emacsclient-snapshot -nw"
+#export EDITOR="emacsclient -nw"
+export EDITOR="emacs"
+export PATH=$PATH:/home/furiel/opt/cross/bin:/home/furiel/usr/src/esp-open-sdk/xtensa-lx106-elf/bin:/opt/wine-staging/bin
