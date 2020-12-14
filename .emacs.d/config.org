@@ -42,7 +42,8 @@
 (global-set-key (kbd "<f7>") '(lambda () (interactive) (recompile)))
 (global-set-key (kbd "M-s g") #'helm-grep-do-git-grep)
 (global-set-key (kbd "C-c r") #'helm-gtags-find-rtag)
-(global-set-key (kbd "<f6>") '(lambda () (interactive) (find-file "/home/furiel/.oh-my-home/.emacs.d/config.org")))
+(global-set-key (kbd "<f6>") '(lambda () (interactive)
+  (find-file "~/.oh-my-home/.emacs.d/config.org")))
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+END_SRC
 
