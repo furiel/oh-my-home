@@ -413,32 +413,6 @@
   (use-package dockerfile-mode
     :ensure t)
 #+END_SRC
-* syslog
-#+BEGIN_SRC emacs-lisp
-(defun find-syslog-ng-config ()
-  (interactive)
-  (let* ((git-root (locate-dominating-file default-directory ".git"))
-         (config-directory (expand-file-name (concat git-root "../root/etc/")))
-         (config-filename (helm :sources
-                                (helm-build-sync-source "config files"
-                                  :candidates (directory-files config-directory nil "\.conf")))))
-    (find-file (concat config-directory config-filename))))
-
-  (use-package syslogngconf-mode
-    :ensure t
-    :magic (("@version: " . syslogngconf-mode))
-    :mode (("/scl/.*\\.conf\\'" . syslogngconf-mode)))
-
-  (use-package flycheck-syslogngconf
-    :ensure t
-    :init (progn
-            (add-hook 'syslogngconf-mode-hook
-                      (lambda () (set-variable
-                                  'flycheck-syslogngconf-executable
-                                  (concat (syslogng-autodetect-root) "/sbin/syslog-ng" ))))
-            (add-hook 'syslogngconf-mode-hook
-                      (lambda () (flycheck-mode 1)))))
-#+END_SRC
 
 * prompt
 #+BEGIN_SRC emacs-lisp
