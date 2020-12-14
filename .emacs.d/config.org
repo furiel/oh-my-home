@@ -45,6 +45,14 @@
 (global-set-key (kbd "<f6>") '(lambda () (interactive)
   (find-file "~/.oh-my-home/.emacs.d/config.org")))
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(if (eq system-type 'darwin)
+  (global-unset-key (kbd "s-w"))
+
+  (setq mac-option-key-is-meta nil
+        mac-command-key-is-meta t
+        mac-command-modifier 'meta
+        mac-option-modifier 'none))
 #+END_SRC
 
 ** Default hooks
