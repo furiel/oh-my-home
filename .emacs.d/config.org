@@ -396,7 +396,7 @@
    '(progn
       (define-key paredit-mode-map (kbd "<C-left>") 'left-word)
       (define-key paredit-mode-map (kbd "<C-right>") 'right-word)))
-#+END_SRC emacs-lisp
+#+END_SRC
 
 * cider
 #+BEGIN_SRC emacs-lisp
@@ -405,7 +405,8 @@
   :init
   (add-hook 'clojure-mode-hook 'eldoc-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode))
-#+END_SRC emacs-lisp
+#+END_SRC
+
 * dockerfile-mode
 
 #+BEGIN_SRC emacs-lisp
