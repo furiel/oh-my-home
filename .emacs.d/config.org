@@ -24,7 +24,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq make-backup-files nil)
 (setq dired-listing-switches "-lXGhA --group-directories-first")
-(if (eq system-type 'darwin)
+(when (eq system-type 'darwin)
   (setq insert-directory-program "/usr/local/bin/gls" dired-use-ls-dired t))
 (setq compilation-scroll-output 'first-error)
 (setq-default indent-tabs-mode nil)
@@ -46,7 +46,7 @@
   (find-file "~/.oh-my-home/.emacs.d/config.org")))
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(if (eq system-type 'darwin)
+(when (eq system-type 'darwin)
   (global-unset-key (kbd "s-w"))
 
   (setq mac-option-key-is-meta nil
