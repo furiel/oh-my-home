@@ -138,6 +138,7 @@
     (setq projectile-switch-project-action 'projectile-dired)
     (setq projectile-completion-system 'helm)
     (projectile-mode))
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 #+END_SRC
 
 * helm
