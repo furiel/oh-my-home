@@ -397,13 +397,13 @@
 
 * paredit
 #+BEGIN_SRC emacs-lisp
-(use-package paredit
-  :ensure t)
+  (use-package paredit
+    :bind (:map paredit-mode-map
+           ("M-s" . nil)
+           ("C-<left>" . nil)
+           ("C-<right>" . nil))
+    :ensure t)
 
-(eval-after-load "paredit"
-   '(progn
-      (define-key paredit-mode-map (kbd "<C-left>") 'left-word)
-      (define-key paredit-mode-map (kbd "<C-right>") 'right-word)))
 #+END_SRC
 
 * cider
