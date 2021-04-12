@@ -505,4 +505,11 @@
        (when (string= (file-name-extension file) "tar")
          (copy-file file package-archive-upload-base)))))
 #+END_SRC
+* git-link
+#+BEGIN_SRC emacs-lisp
+  (use-package git-link
+    :ensure t
+    :bind (("C-c g l" . 'git-link))
+    :config (setq git-link-use-commit t))
+#+END_SRC
 
