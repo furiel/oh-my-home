@@ -28,12 +28,14 @@
   (setq insert-directory-program "/usr/local/bin/gls" dired-use-ls-dired t))
 (setq compilation-scroll-output 'first-error)
 (setq-default indent-tabs-mode nil)
+(setq use-package-always-ensure t)
 #+END_SRC
 
 ** default-modes
 #+BEGIN_SRC emacs-lisp
 (electric-indent-mode -1)
 (show-paren-mode 1)
+(global-visual-line-mode t)
 #+END_SRC
 ** key bindings
 
@@ -43,7 +45,8 @@
 (global-set-key (kbd "M-s g") #'helm-grep-do-git-grep)
 (global-set-key (kbd "C-c r") #'helm-gtags-find-rtag)
 (global-set-key (kbd "<f6>") '(lambda () (interactive)
-  (find-file "~/.oh-my-home/.emacs.d/config.org")))
+  (find-file "~/.emacs.d/config.org")))
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (when (eq system-type 'darwin)
@@ -52,59 +55,52 @@
   (setq mac-option-key-is-meta nil
         mac-command-key-is-meta t
         mac-command-modifier 'meta
-        mac-option-modifier 'none))
+        mac-option-modifier 'super))
 #+END_SRC
 
 ** Default hooks
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(add-to-list 'auto-mode-alist '("\\.zts\\'" . python-mode))
 #+END_SRC
 
 * org
 
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :ensure t
+    :bind (:map org-mode-map
+           ("C-'" . nil))
     :config (setq org-src-fontify-natively t))
 
-  (use-package ob-async
-    :ensure t)
+  (use-package ob-async)
 
   (use-package org-bullets
-    :ensure t
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
   (use-package ox-reveal
-    :ensure ox-reveal
     :config
       (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
       (setq org-reveal-mathjax t))
 
-  (use-package htmlize
-    :ensure t)
+  (use-package htmlize)
 
-(org-babel-do-load-languages
- 'org-babel-load-languages '((C . t) (shell . t)))
+  (org-babel-do-load-languages
+    'org-babel-load-languages '((C . t) (shell . t)))
 
 #+END_SRC
 
 * General completion
 ** which-key
 #+BEGIN_SRC emacs-lisp
-(use-package which-key
-	:ensure t
-	:config
-	(which-key-mode))
+  (use-package which-key
+    :config (which-key-mode))
 #+END_SRC
 
 ** auto-complete
 
 #+BEGIN_SRC emacs-lisp
 (use-package auto-complete
-  :ensure t
   :init
   (ac-config-default)
   (global-auto-complete-mode t))
@@ -113,11 +109,7 @@
 * moving around
 
 #+BEGIN_SRC emacs-lisp
-(use-package try
-	:ensure t)
-
 (use-package avy
-  :ensure t
   :bind (("C-'" . avy-goto-char-timer)
          ("C-:" . avy-goto-line)
          ("M-g w" . avy-goto-word-1)))
@@ -141,7 +133,6 @@
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
-  :ensure t
   :config
     (setq projectile-switch-project-action 'projectile-dired)
     (setq projectile-completion-system 'helm)
@@ -153,7 +144,6 @@
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm
-  :ensure t
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files))
   :config
@@ -165,9 +155,6 @@
 
 (setq helm-gtags-prefix-key "\C-t")
 (setq helm-gtags-suggested-key-mapping t)
-
-(use-package helm-gtags-furiel-fork
-  :ensure t)
 
 (defun run-gtags ()
   (interactive)
@@ -186,32 +173,22 @@
        (setq args (cons '(4) (cdr args))))
      (apply orig args))))
 
-(use-package helm-ag
-  :ensure t)
-#+END_SRC
-
-* wc-mode
-
-#+BEGIN_SRC emacs-lisp
-(use-package wc-mode
-  :ensure t
-  :config (wc-mode))
+(use-package helm-ag)
 #+END_SRC
 
 * magit
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
-  :ensure t
-  :config (setq magit-commit-arguments (list "--signoff")))
+  :config (setq magit-commit-arguments (list "--signoff")
+                transient-default-level 7))
 #+END_SRC
 
 * iedit
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package iedit
-  ;;   :ensure t
-  ;;   :bind (("C-c ;" . iedit-mode)))
+  (use-package iedit
+    :bind (("C-c ;" . iedit-mode)))
 #+END_SRC
 
 * kernel-mode
@@ -240,50 +217,49 @@
 (add-hook 'c-mode-hook 'helm-gtags-mode)
 #+END_SRC
 
-* semantic-mode - turned off!!!
-
-#+BEGIN_SRC emacs-lisp
-  ;; (semantic-mode 1)
-  ;; (defun custom:add-semantic-to-auto-complete ()
-  ;;   (add-to-list 'ac-sources 'ac-source-semantic))
-  ;; (add-hook 'c-mode-common-hook 'custom:add-semantic-to-auto-complete)
-  ;; (global-semantic-idle-scheduler-mode 1)
-#+END_SRC
-
 * find-file-in-project
 
 #+BEGIN_SRC emacs-lisp
 (use-package find-file-in-project
-  :ensure t
   :bind (("C-x f" . find-file-in-project)))
 #+END_SRC
 
 * try
 #+BEGIN_SRC emacs-lisp
-(use-package try
-	:ensure t)
+  (use-package try)
 #+END_SRC
 
 * yaml-mode
 #+BEGIN_SRC emacs-lisp
-(use-package yaml-mode
-  :ensure t)
+  (use-package yaml-mode)
 #+END_SRC
 * cmake-mode
 #+BEGIN_SRC emacs-lisp
-(use-package cmake-mode
-  :ensure t)
+  (use-package cmake-mode)
 #+END_SRC
 
 * flycheck
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package flycheck
-  ;;   :ensure t
-  ;;   :init
-  ;;   (global-flycheck-mode t))
+  (use-package flycheck-clj-kondo)
 #+END_SRC
 
+* clojure
+** clojure-mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package clojure-mode
+  :ensure t
+  :config (require 'flycheck-clj-kondo))
+#+END_SRC
+
+** vlaaad
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c c s") #'(lambda () (interactive)
+  (cider-interactive-eval "(do (require 'vlaaad.reveal) (add-tap (vlaaad.reveal/ui)))")))
+(global-set-key (kbd "C-c c r") #'(lambda () (interactive)
+  (cider-interactive-eval "(reset)")))
+#+END_SRC
 * python
 
 #+BEGIN_SRC emacs-lisp
@@ -298,41 +274,31 @@
 #+END_SRC
 
 * markdown-mode
+#+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
-  :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
+#+END_SRC
 * undo-tree
 
 #+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-:ensure t
-  :init
-    (global-undo-tree-mode))
+  (use-package undo-tree
+    :init (global-undo-tree-mode))
 #+END_SRC
 
-* misc
+* expand-region
 #+BEGIN_SRC emacs-lisp
-
   (use-package expand-region
-    :ensure t
     :config
     (global-set-key (kbd "C-=") 'er/expand-region))
-
-  ;; (use-package hungry-delete
-  ;;   :ensure t
-  ;;   :config
-  ;;   (global-hungry-delete-mode))
-
 #+END_SRC
 
 * multiple cursors
 #+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
-    :ensure t
     :bind (("C-S-c C-S-c" . mc/edit-lines)
            ("C->" . mc/mark-next-like-this)
            ("C-<" . mc/mark-previous-like-this)
@@ -342,18 +308,14 @@
 * bison-mode
 
 #+BEGIN_SRC emacs-lisp
-(use-package bison-mode
-    :ensure t)
-(add-to-list 'auto-mode-alist '("\\.ym\\'" . bison-mode))
+  (use-package bison-mode
+    :config (add-to-list 'auto-mode-alist '("\\.ym\\'" . bison-mode)))
 #+END_SRC
 
 * phi-search
 
 #+BEGIN_SRC emacs-lisp
-  (use-package phi-search
-    :ensure t)
-  ;; :bind (("C-s". phi-search)
-  ;;        ("C-r" . phi-search-backward))
+  (use-package phi-search)
 
   (add-hook 'multiple-cursors-mode-enabled-hook
             (lambda ()
@@ -391,35 +353,42 @@
 #+BEGIN_SRC emacs-lisp
   (use-package hy-mode
     :bind (:map hy-mode-map
-                ("C-x C-e" . 'hy-shell-eval-last-sexp))
-    :ensure t)
+                ("C-x C-e" . 'hy-shell-eval-last-sexp)))
 #+END_SRC
 
 * paredit
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
     :bind (:map paredit-mode-map
-           ("M-s" . nil)
-           ("C-<left>" . nil)
-           ("C-<right>" . nil))
-    :ensure t)
+          ; ("M-s" . nil)
+          ; ("C-<left>" . nil)
+          ; ("C-<right>" . nil)
+  ))
 
 #+END_SRC
 
 * cider
 #+BEGIN_SRC emacs-lisp
-(use-package cider
-  :ensure t
-  :init
-  (add-hook 'clojure-mode-hook 'eldoc-mode)
-  (add-hook 'clojure-mode-hook 'paredit-mode))
+  (use-package cider
+    :init
+    (add-hook 'clojure-mode-hook 'eldoc-mode)
+    (add-hook 'clojure-mode-hook 'paredit-mode))
+    (add-hook 'cider-mode-hook
+              (lambda ()
+                (define-key clojure-mode-map (kbd "<C-f12>") 'ciderstart-prepl)))
+    (add-hook 'clojure-mode-hook
+              (lambda () (put-clojure-indent '>defn :defn)))
+
+  (defun cider-start-prepl ()
+    (interactive)
+    (cider-interactive-eval "(require '[clojure.core.server :as server])
+     (server/start-server {:accept 'clojure.core.server/io-prepl :port 7777 :name \"my prepl\"})"))
 #+END_SRC
 
 * dockerfile-mode
 
 #+BEGIN_SRC emacs-lisp
-  (use-package dockerfile-mode
-    :ensure t)
+  (use-package dockerfile-mode)
 #+END_SRC
 
 * prompt
@@ -508,7 +477,6 @@
 * git-link
 #+BEGIN_SRC emacs-lisp
   (use-package git-link
-    :ensure t
     :bind (("C-c g l" . 'git-link))
     :config (setq git-link-use-commit t))
 #+END_SRC
