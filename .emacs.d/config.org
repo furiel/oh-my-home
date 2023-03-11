@@ -176,6 +176,10 @@
 (use-package helm-ag)
 #+END_SRC
 
+* helm-gtags
+#+BEGIN_SRC lisp
+  (use-package helm-gtags)
+#+END_SRC
 * magit
 
 #+BEGIN_SRC emacs-lisp
@@ -282,13 +286,6 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 #+END_SRC
-* undo-tree
-
-#+BEGIN_SRC emacs-lisp
-  (use-package undo-tree
-    :init (global-undo-tree-mode))
-#+END_SRC
-
 * expand-region
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
