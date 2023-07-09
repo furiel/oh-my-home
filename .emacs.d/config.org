@@ -4,11 +4,11 @@
 ** Font
 
 #+BEGIN_SRC emacs-lisp
-  (set-face-attribute 'default nil
-                      :family "DejaVu Sans Mono"
-                      :height 158
-                      :weight 'normal
-                      :width 'normal)
+  (let* ((favored-fonts '("Source Code Pro" "DejaVu Sans Mono" "Monaco"))
+         (favored-font (car (seq-intersection favored-fonts (font-family-list)))))
+    (if favored-font
+        (set-face-attribute 'default nil :font favored-font)
+      (error "No intersection of " favored-fonts (font-family-list))))
 #+END_SRC
 
 ** Themes
