@@ -100,7 +100,6 @@ function notifyosd-preexec() {
 # make sure this plays nicely with any existing preexec
 preexec_functions+=( notifyosd-preexec )
 
-#export EDITOR="emacsclient -nw"
 export EDITOR="emacs"
 export PATH=$PATH:/home/furiel/bin
 
