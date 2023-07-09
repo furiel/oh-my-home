@@ -1,8 +1,6 @@
 #+STARTUP: overview
 
-* customizations
-** Font
-
+* Font
 #+BEGIN_SRC emacs-lisp
   (let* ((favored-fonts '("Source Code Pro" "DejaVu Sans Mono" "Monaco"))
          (favored-font (car (seq-intersection favored-fonts (font-family-list)))))
@@ -11,45 +9,33 @@
       (error "No intersection of " favored-fonts (font-family-list))))
 #+END_SRC
 
-** Themes
-
+* Theme
 #+BEGIN_SRC emacs-lisp
 (load-theme 'tango-dark)
 #+END_SRC
 
-** Variables
+#+BEGIN_SRC emacs-lisp
+  (set-frame-parameter (selected-frame) 'alpha '(90 . 50))
+  (add-to-list 'default-frame-alist '(alpha . (90 . 50)))
+#+END_SRC
+
+* save settings
 #+BEGIN_SRC emacs-lisp
 (setq make-backup-files nil)
 (setq auto-save-interval 1000)
 (fset 'yes-or-no-p 'y-or-n-p)
-(setq make-backup-files nil)
+#+END_SRC
+
+* dired
+#+BEGIN_SRC emacs-lisp
 (setq dired-listing-switches "-lXGhA --group-directories-first")
-(when (eq system-type 'darwin)
-  (setq insert-directory-program "/usr/local/bin/gls" dired-use-ls-dired t))
-(setq compilation-scroll-output 'first-error)
-(setq-default indent-tabs-mode nil)
-(setq use-package-always-ensure t)
 #+END_SRC
 
-** default-modes
+* osx
 #+BEGIN_SRC emacs-lisp
-(electric-indent-mode -1)
-(show-paren-mode 1)
-(global-visual-line-mode t)
-#+END_SRC
-** key bindings
-
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<f5>") 'revert-buffer)
-(global-set-key (kbd "<f7>") '(lambda () (interactive) (recompile)))
-(global-set-key (kbd "M-s g") #'helm-grep-do-git-grep)
-(global-set-key (kbd "C-c r") #'helm-gtags-find-rtag)
-(global-set-key (kbd "<f6>") '(lambda () (interactive)
-  (find-file "~/.emacs.d/config.org")))
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
 (when (eq system-type 'darwin)
+  (setq insert-directory-program "/usr/local/bin/gls" dired-use-ls-dired t)
+
   (global-unset-key (kbd "s-w"))
 
   (setq mac-option-key-is-meta nil
@@ -58,10 +44,34 @@
         mac-option-modifier 'super))
 #+END_SRC
 
-** Default hooks
-
+* ensure
 #+BEGIN_SRC emacs-lisp
+(setq use-package-always-ensure t)
+#+END_SRC
+
+* whitespaces
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil)
+(electric-indent-mode -1)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
+* compile window
+#+BEGIN_SRC emacs-lisp
+(setq compilation-scroll-output 'first-error)
+#+END_SRC
+
+* buffer rendering
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode 1)
+(global-visual-line-mode t)
+#+END_SRC
+
+* general key bindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<f6>") '(lambda () (interactive)
+  (find-file "~/.emacs.d/config.org")))
+(global-set-key (kbd "<f7>") '(lambda () (interactive) (recompile)))
 #+END_SRC
 
 * org
@@ -87,10 +97,9 @@
 
   (org-babel-do-load-languages
     'org-babel-load-languages '((C . t) (shell . t)))
-
 #+END_SRC
 
-* General completion
+* general completion
 ** which-key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
@@ -129,56 +138,65 @@
    (recenter)))
 #+END_SRC
 
+* paredit
+#+BEGIN_SRC emacs-lisp
+  (use-package paredit
+    :bind (:map paredit-mode-map
+          ("M-s" . nil)
+          ; ("C-<left>" . nil)
+          ; ("C-<right>" . nil)
+  ))
+
+#+END_SRC
+* helm
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+    :bind (("M-x" . helm-M-x)
+           ("C-x C-f" . helm-find-files)
+           ("M-s g" . helm-grep-do-git-grep))
+    :config (helm-mode 1))
+#+END_SRC
+
 * projectile
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :config
+    (require 'helm)
     (setq projectile-switch-project-action 'projectile-dired)
     (setq projectile-completion-system 'helm)
     (projectile-mode))
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 #+END_SRC
 
-* helm
-
-#+BEGIN_SRC emacs-lisp
-(use-package helm
-  :bind (("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files))
-  :config
-    (helm-mode 1))
-
-(add-hook 'c-mode-hook 'helm-gtags-mode)
-(add-hook 'c++-mode-hook 'helm-gtags-mode)
-(add-hook 'asm-mode-hook 'helm-gtags-mode)
-
-(setq helm-gtags-prefix-key "\C-t")
-(setq helm-gtags-suggested-key-mapping t)
-
-(defun run-gtags ()
-  (interactive)
-  (let* ((path default-directory)
-         (default-directory (vc-call-backend (vc-responsible-backend path) 'root path)))
-    (shell-command "gtags --gtagslabel=ctag")))
-
-(advice-add
- 'helm-grep-do-git-grep :around
- (lambda (orig &rest args)
-   "Reverse sense of prefix arg."
-   (helm-gtags-push-stack)
-   (let ((arg (car args)))
-     (if arg
-	 (setq args (cons nil (cdr args)))
-       (setq args (cons '(4) (cdr args))))
-     (apply orig args))))
-
-(use-package helm-ag)
-#+END_SRC
-
 * helm-gtags
 #+BEGIN_SRC lisp
+  (setq helm-gtags-prefix-key "\C-t")
+  (setq helm-gtags-suggested-key-mapping t)
+
   (use-package helm-gtags)
+
+  (add-hook 'c-mode-hook 'helm-gtags-mode)
+  (add-hook 'c++-mode-hook 'helm-gtags-mode)
+  (add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+  (defun run-gtags ()
+    (interactive)
+    (let* ((path default-directory)
+           (default-directory (vc-call-backend (vc-responsible-backend path) 'root path)))
+      (shell-command "gtags --gtagslabel=ctag")))
+
+  (advice-add
+   'helm-grep-do-git-grep :around
+   (lambda (orig &rest args)
+     "Reverse sense of prefix arg."
+     (helm-gtags-push-stack)
+     (let ((arg (car args)))
+       (if arg
+           (setq args (cons nil (cdr args)))
+         (setq args (cons '(4) (cdr args))))
+       (apply orig args))))
 #+END_SRC
 * magit
 
@@ -195,7 +213,26 @@
     :bind (("C-c ;" . iedit-mode)))
 #+END_SRC
 
-* kernel-mode
+* try
+#+BEGIN_SRC emacs-lisp
+  (use-package try)
+#+END_SRC
+
+* markdown-mode
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+#+END_SRC
+* yaml-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode)
+#+END_SRC
+* c
+** kernel-mode
 
 #+BEGIN_SRC emacs-lisp
 (define-minor-mode linux-kernel-mode
@@ -207,45 +244,36 @@
    (c-set-style "linux")))
 #+END_SRC
 
-* c-mode
+** c-mode
 
+Style can be controlled with c-default-style and c-set-style. Default is gnu.
 #+BEGIN_SRC
-(setq c-default-style "linux" c-basic-offset 4)
-
-(defun balabit-c-mode-hooks ()
-  (let ((bname (buffer-file-name)))
-    (cond
-     ((string-match ".*syslog.*" bname) (c-set-style "gnu") ))))
-
-(add-hook 'c-mode-hook 'balabit-c-mode-hooks)
 (add-hook 'c-mode-hook 'helm-gtags-mode)
 #+END_SRC
 
-* find-file-in-project
-
-#+BEGIN_SRC emacs-lisp
-(use-package find-file-in-project
-  :bind (("C-x f" . find-file-in-project)))
-#+END_SRC
-
-* try
-#+BEGIN_SRC emacs-lisp
-  (use-package try)
-#+END_SRC
-
-* yaml-mode
-#+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode)
-#+END_SRC
-* cmake-mode
+** cmake-mode
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode)
 #+END_SRC
 
-* flycheck
+** bison-mode
 
 #+BEGIN_SRC emacs-lisp
-  (use-package flycheck-clj-kondo)
+  (use-package bison-mode
+    :config (add-to-list 'auto-mode-alist '("\\.ym\\'" . bison-mode)))
+#+END_SRC
+
+* python
+
+#+BEGIN_SRC emacs-lisp
+(use-package jedi
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+(use-package virtualenvwrapper
+  :ensure t)
 #+END_SRC
 
 * clojure
@@ -264,27 +292,58 @@
 (global-set-key (kbd "C-c c r") #'(lambda () (interactive)
   (cider-interactive-eval "(reset)")))
 #+END_SRC
-* python
-
+** kondo
 #+BEGIN_SRC emacs-lisp
-(use-package jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (add-hook 'python-mode-hook 'jedi:ac-setup))
-
-(use-package virtualenvwrapper
-  :ensure t)
+(use-package flycheck-clj-kondo)
 #+END_SRC
 
-* markdown-mode
+** cider
 #+BEGIN_SRC emacs-lisp
-(use-package markdown-mode
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
+  (use-package cider
+    :init
+    (add-hook 'clojure-mode-hook 'eldoc-mode)
+    (add-hook 'clojure-mode-hook 'paredit-mode))
+    (add-hook 'cider-mode-hook
+              (lambda ()
+                (define-key clojure-mode-map (kbd "<C-f12>") 'ciderstart-prepl)))
+    (add-hook 'clojure-mode-hook
+              (lambda () (put-clojure-indent '>defn :defn)))
+
+  (defun cider-start-prepl ()
+    (interactive)
+    (cider-interactive-eval "(require '[clojure.core.server :as server])
+     (server/start-server {:accept 'clojure.core.server/io-prepl :port 7777 :name \"my prepl\"})"))
+#+END_SRC
+
+** lsp
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-mode
+  :ensure t
+  :hook ((clojure-mode . lsp)
+         (clojurec-mode . lsp)
+         (clojurescript-mode . lsp))
+  :config
+  (dolist (m '(clojure-mode
+               clojurec-mode
+               clojurescript-mode
+               clojurex-mode))
+     (add-to-list 'lsp-language-id-configuration `(,m . "clojure"))))
+#+END_SRC
+
+* hy
+#+BEGIN_SRC emacs-lisp
+  (use-package hy-mode
+    :bind (:map hy-mode-map
+                ("C-x C-e" . 'hy-shell-eval-last-sexp)))
+#+END_SRC
+* rust
+#+BEGIN_SRC emacs-lisp
+  (use-package rust-mode
+    :config (setq rust-format-on-save t))
+
+  (use-package cargo)
+
+  (setq exec-path (append exec-path (expand-file-name "~/.cargo/bin")))
 #+END_SRC
 * expand-region
 #+BEGIN_SRC emacs-lisp
@@ -300,13 +359,6 @@
            ("C->" . mc/mark-next-like-this)
            ("C-<" . mc/mark-previous-like-this)
            ("C-c C-<" . mc/mark-all-like-this)))
-#+END_SRC
-
-* bison-mode
-
-#+BEGIN_SRC emacs-lisp
-  (use-package bison-mode
-    :config (add-to-list 'auto-mode-alist '("\\.ym\\'" . bison-mode)))
 #+END_SRC
 
 * phi-search
@@ -346,42 +398,6 @@
               (interactive)
               (global-set-key (kbd "C-x C-e") 'eval-last-sexp)))
 #+END_SRC
-* hy-mode
-#+BEGIN_SRC emacs-lisp
-  (use-package hy-mode
-    :bind (:map hy-mode-map
-                ("C-x C-e" . 'hy-shell-eval-last-sexp)))
-#+END_SRC
-
-* paredit
-#+BEGIN_SRC emacs-lisp
-  (use-package paredit
-    :bind (:map paredit-mode-map
-          ; ("M-s" . nil)
-          ; ("C-<left>" . nil)
-          ; ("C-<right>" . nil)
-  ))
-
-#+END_SRC
-
-* cider
-#+BEGIN_SRC emacs-lisp
-  (use-package cider
-    :init
-    (add-hook 'clojure-mode-hook 'eldoc-mode)
-    (add-hook 'clojure-mode-hook 'paredit-mode))
-    (add-hook 'cider-mode-hook
-              (lambda ()
-                (define-key clojure-mode-map (kbd "<C-f12>") 'ciderstart-prepl)))
-    (add-hook 'clojure-mode-hook
-              (lambda () (put-clojure-indent '>defn :defn)))
-
-  (defun cider-start-prepl ()
-    (interactive)
-    (cider-interactive-eval "(require '[clojure.core.server :as server])
-     (server/start-server {:accept 'clojure.core.server/io-prepl :port 7777 :name \"my prepl\"})"))
-#+END_SRC
-
 * dockerfile-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -478,3 +494,7 @@
     :config (setq git-link-use-commit t))
 #+END_SRC
 
+* gpg
+#+BEGIN_SRC emacs-lisp
+  (setenv "SSH_AUTH_SOCK" (string-trim (shell-command-to-string "gpgconf --list-dirs agent-ssh-socket")))
+#+END_SRC
