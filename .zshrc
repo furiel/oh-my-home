@@ -102,4 +102,5 @@ preexec_functions+=( notifyosd-preexec )
 
 #export EDITOR="emacsclient -nw"
 export EDITOR="emacs"
-export PATH=$PATH:/home/furiel/opt/cross/bin:/home/furiel/usr/src/esp-open-sdk/xtensa-lx106-elf/bin:/opt/wine-staging/bin
+export PATH=$PATH:/home/furiel/bin
+
