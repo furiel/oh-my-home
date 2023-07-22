@@ -273,6 +273,14 @@ Style can be controlled with c-default-style and c-set-style. Default is gnu.
         c-basic-offset 4)
 #+END_SRC
 
+* go
+#+BEGIN_SRC emacs-lisp
+  (use-package go-mode
+    :config (add-hook 'go-mode-hook 'lsp-deferred))
+
+  (setq exec-path (append exec-path (list (expand-file-name "~/gopath/bin/"))))
+#+END_SRC
+
 * python
 
 #+BEGIN_SRC emacs-lisp
