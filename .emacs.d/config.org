@@ -343,7 +343,7 @@ Style can be controlled with c-default-style and c-set-style. Default is gnu.
 
   (use-package cargo)
 
-  (setq exec-path (append exec-path (expand-file-name "~/.cargo/bin")))
+  (setq exec-path (append exec-path (list (expand-file-name "~/.cargo/bin"))))
 #+END_SRC
 * expand-region
 #+BEGIN_SRC emacs-lisp
