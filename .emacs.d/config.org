@@ -263,6 +263,16 @@ Style can be controlled with c-default-style and c-set-style. Default is gnu.
     :config (add-to-list 'auto-mode-alist '("\\.ym\\'" . bison-mode)))
 #+END_SRC
 
+** lsp
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
+
+  (setq lsp-idle-delay 0.1)
+  (setq c-default-style "linux"
+        c-basic-offset 4)
+#+END_SRC
+
 * python
 
 #+BEGIN_SRC emacs-lisp
